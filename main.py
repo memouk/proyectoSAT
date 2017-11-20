@@ -7,66 +7,49 @@ Created on Thu Oct 12 13:51:34 2017
 """
 
 
-from	 scipy.ndimage	import	imread
-from	 matplotlib.pyplot	import	imshow,	show, imsave
-from	 skimage.filters.rank	 import	median
-from skimage.filters.rank import maximum,minimum
-from	skimage.color	import	rgb2yiq,	rgb2hsv,	rgb2xyz,	rgb2lab,	rgb2ycbcr	,convert_colorspace
-from skimage.color import rgb2gray	
-from skimage.exposure import adjust_gamma
-from skimage.exposure import equalize_hist
 import matplotlib.pyplot as plt
-import numpy as np
-from skimage.morphology import square
-from skimage.filters import gaussian
-import skimage.filters
-import matplotlib.pyplot as plt
-from skimage.filters.rank import mean
-from skimage.filters import sobel, sobel_h, sobel_v
-from skimage.feature import canny
+from scipy.ndimage import imread
+from skimage.color import rgb2gray
+from	 matplotlib.pyplot	import	imshow,	show
+#from balu.FeatureExtraction import Bfx_basicgeo
+from skimage.filters import sobel
+from skimage.morphology import square, disk, rectangle, dilation 
 
 
-s=square(11)
-img1=rgb2gray(imread('img/1.jpg'))
-#mediaa=mean(img1[:,:,0],s)
+print("imagen original")
 
-#test=mediaa-img1[:,:,1]
-
-
-
-print("sobel")
-borde2 = skimage.filters.sobel(rgb2gray(img1),mask=None)
-imshow(borde2,cmap='gray')
+I = 255 - rgb2gray(imread('img/1.jpg').astype('uint8'))
+imshow(I, cmap='gray')
 show()
 
+print("imagen recortada")
 
+F = I[1500:3000, 1450:1800]
+imshow(F, cmap='gray')
+show()
 
+print("imagen recortada binarizada")
 
-#print('sobel')
-#
-#B1 = sobel_h(img1)
-#B2 = sobel_v(img1)
-#BW = np.maximum(B1, B2) > 0.09
-#
-#imshow(BW,cmap='gray')
-#show()
+borde2 = sobel(F,mask=None)
+Z=borde2>0.1
+imshow(Z,cmap='gray')
+show()
 
+plt.hist(borde2.ravel(), 256, [0, 1])
+plt.show()
 
+selSquare = square(3)
+selDisk = disk(2)
+selRectangle = rectangle(2, 3)
 
-#plt.hist(img1.ravel(), 256, [0, 1])
-#plt.show()
-#
-#plt.hist(test2.ravel(), 256, [0, 1])
-#plt.show()
-#plt.hist(test3.ravel(), 256, [0, 1])
-#plt.show()
+IDilationSquare = dilation(Z, selem=selSquare)
+imshow(IDilationSquare, cmap='gray')
+show()
+IDilationDisk = dilation(Z, selem=selDisk)
+imshow(IDilationDisk, cmap='gray')
+show()
+IDilationRectangle = dilation(Z, selem=selRectangle)
+imshow(IDilationRectangle, cmap='gray')
+show()
 
-#imshow(img1)
-#show()
-#imshow(test2,cmap='gray')
-#show()
-#imshow(img1,cmap='gray')
-#show()
-#imshow(BW,cmap='gray')
-#show()
 
