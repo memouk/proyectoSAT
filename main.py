@@ -31,7 +31,7 @@ show()
 
 print("imagen recortada")
 
-F = I[1500:3000, 1450:1800]
+F = I[1525:3000, 1450:1800]
 imshow(F, cmap='gray')
 show()
 
@@ -75,6 +75,11 @@ borde3 = sobel(I3,mask=None)
 imshow(borde3,cmap='gray')
 show()
 
+
+
+print(np.argmin(borde3))
+print(np.argmax(borde3))
+print(np.linalg.norm(np.argmin(borde3)-np.argmax(borde3)))
 #h1 = square(3)
 #for i in range(1,100):
 #    I4 = mean(IDilationDisk, h1)
