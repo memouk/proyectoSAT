@@ -25,7 +25,7 @@ from skimage.filters import gaussian
 
 print("imagen original")
 
-I = 255 - rgb2gray(imread('img/1.jpg').astype('uint8'))
+I = 255 - rgb2gray(imread('img/2-1.jpg').astype('uint8'))
 imshow(I, cmap='gray')
 show()
 
@@ -38,7 +38,7 @@ show()
 print("imagen recortada binarizada")
 
 borde2 = sobel(F,mask=None)
-Z=borde2>0.1
+Z=(borde2>0.1).astype('uint32')
 imshow(Z,cmap='gray')
 show()
 
@@ -77,9 +77,21 @@ show()
 
 
 
+
+#print(np.nonzero(Z))    
 print(np.argmin(borde3))
 print(np.argmax(borde3))
 print(np.linalg.norm(np.argmin(borde3)-np.argmax(borde3)))
+
+
+def proporcion(maxx):
+    X=(45*maxx)/381797
+    return X
+
+print("distancia entre altura maxima del madero y nivel del rio ")
+print(proporcion(np.argmax(borde3)))
+print("profuncidad del rio ")
+print(72-proporcion(np.argmax(borde3)))
 #h1 = square(3)
 #for i in range(1,100):
 #    I4 = mean(IDilationDisk, h1)
